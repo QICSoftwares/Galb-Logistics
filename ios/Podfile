@@ -19,6 +19,8 @@ target 'galb' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'react-native-maps', :path => '../node_modules/react-native-maps'
+
   target 'galbTests' do
     inherit! :complete
     # Pods for testing

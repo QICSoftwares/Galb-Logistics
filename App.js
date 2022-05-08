@@ -1,8 +1,13 @@
 import React from 'react';
-import HomeScreen from './src/screens/HomeScreen';
+import {StatusBar, LogBox} from 'react-native';
+import Colors from './src/constants/Colors';
+import Navigation from './src/navigation/Navigation';
+
+StatusBar.setBackgroundColor(Colors.primary);
+LogBox.ignoreLogs(['ViewPropTypes']);
 
 const App = () => {
-  return <HomeScreen />;
+  return <Navigation />;
 };
 
 export default App;
