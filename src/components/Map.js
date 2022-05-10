@@ -10,6 +10,8 @@ import {
 import React, {useState, useEffect} from 'react';
 import {SCREEN_WIDTH, SCREEN_HEIGHT} from '../constants/Variables';
 import Geolocation from 'react-native-geolocation-service';
+import {mapStyle} from '../constants/MapStyle';
+//import {GOOGLE_MAPS_APIKEY} from '@env';
 
 const Map = () => {
   const [region, setRegion] = useState({
@@ -119,7 +121,6 @@ const Map = () => {
           },
           enableHighAccuracy: true,
           timeout: 15000,
-          maximumAge: 10000,
           distanceFilter: 0,
           forceRequestLocation: true,
           forceLocationManager: true,
@@ -130,9 +131,15 @@ const Map = () => {
 
     getLocation();
   }, []);
+
   return (
     <View>
-      <MapView region={region} provider={PROVIDER_GOOGLE} style={styles.map} />
+      <MapView
+        region={region}
+        provider={PROVIDER_GOOGLE}
+        style={styles.map}
+        customMapStyle={mapStyle}
+      />
     </View>
   );
 };
