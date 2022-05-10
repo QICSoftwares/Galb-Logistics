@@ -3,6 +3,7 @@ import * as Screen from '../screens';
 import Icon, {Icons} from '../components/Icons';
 import React from 'react';
 import Colors from '../constants/Colors';
+import {StatusBarController} from '../constants/Functions';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -13,7 +14,14 @@ export default function TabNavigation() {
         backgroundColor: Colors.bag1Bg,
       }}
       labeled={false}
-      activeColor={Colors.primary}>
+      activeColor={Colors.primary}
+      screenListeners={({route}) => ({
+        state: e => {
+          {
+            StatusBarController(route);
+          }
+        },
+      })}>
       <Tab.Screen
         name="Home"
         component={Screen.HomeScreen}
@@ -47,7 +55,7 @@ export default function TabNavigation() {
         component={Screen.ProfileScreen}
         options={{
           tabBarIcon: ({color}) => (
-            <Icon type={Icons.Octicons} name="person" color={color} size={22} />
+            <Icon type={Icons.Entypo} name="wallet" color={color} size={22} />
           ),
         }}
       />
