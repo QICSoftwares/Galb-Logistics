@@ -5,6 +5,8 @@ import Book from './Book';
 import NotificationScreen from './NotificationScreen';
 import Transactions from './Transactions';
 import SupportScreen from './SupportScreen';
+import LoginScreen from './LoginScreen';
+import SignupScreen from './SignupScreen';
 
 export {
   HomeScreen,
@@ -14,4 +16,6 @@ export {
   NotificationScreen,
   Transactions,
   SupportScreen,
+  LoginScreen,
+  SignupScreen,
 };

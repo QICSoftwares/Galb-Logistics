@@ -63,7 +63,7 @@ const Header = () => {
         <TouchableOpacity style={{}} onPress={() => navigation.openDrawer()}>
           <Icon type={Icons.Feather} name={'menu'} color={Colors.white} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
           <Icon
             type={Icons.Ionicons}
             name={'notifications-outline'}

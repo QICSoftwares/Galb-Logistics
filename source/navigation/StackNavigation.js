@@ -19,6 +19,8 @@ const StackNavigation = () => {
       />
       <Stack.Screen name="Transactions" component={Screen.Transactions} />
       <Stack.Screen name="Support" component={Screen.SupportScreen} />
+      <Stack.Screen name="Login" component={Screen.LoginScreen} />
+      <Stack.Screen name="Signin" component={Screen.SignupScreen} />
     </Stack.Navigator>
   );
 };
