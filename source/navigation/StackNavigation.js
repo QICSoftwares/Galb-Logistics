@@ -9,7 +9,8 @@ const StackNavigation = () => {
   return (
     <Stack.Navigator
       initialRouteName="Drawer"
-      screenOptions={{headerShown: false}}>
+      detachInactiveScreens={false}
+      screenOptions={{header: () => null}}>
       <Stack.Screen name="Drawer" component={DrawerNavigation} />
       <Stack.Screen name="Book" component={Screen.Book} />
       <Stack.Screen
