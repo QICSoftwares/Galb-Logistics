@@ -115,8 +115,9 @@ const DrawerNavigation = () => {
   return (
     <Drawer.Navigator
       initialRouteName="Tab"
+      detachInactiveScreens={false}
       screenOptions={{
-        headerShown: false,
+        header: () => null,
         drawerPosition: 'left',
       }}
       drawerContent={props => <RenderDrawer {...props} />}>

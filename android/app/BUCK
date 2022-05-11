@@ -35,12 +35,12 @@ android_library(
 
 android_build_config(
     name = "build_config",
-    package = "com.galb",
+    package = "com.qic.galb",
 )
 
 android_resource(
     name = "res",
-    package = "com.galb",
+    package = "com.qic.galb",
     res = "src/main/res",
 )
 

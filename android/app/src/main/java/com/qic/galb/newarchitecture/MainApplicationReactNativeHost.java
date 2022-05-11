@@ -1,4 +1,4 @@
-package com.galb.newarchitecture;
+package com.qic.galb.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.galb.BuildConfig;
-import com.galb.newarchitecture.components.MainComponentsRegistry;
-import com.galb.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.qic.galb.BuildConfig;
+import com.qic.galb.newarchitecture.components.MainComponentsRegistry;
+import com.qic.galb.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

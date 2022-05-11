@@ -1,7 +1,15 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
 import React from 'react';
 import Colors from '../constants/Colors';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {} from 'react-native-gesture-handler';
 import {SCREEN_WIDTH} from '../constants/Variables';
 import box from '../assets/images/box.png';
 import rider from '../assets/images/rider.png';
@@ -29,41 +37,46 @@ const HomeScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={{height: '40%'}}>
-        <Header />
-      </View>
-      <View style={{justifyContent: 'space-evenly', flex: 1}}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-          }}>
-          <MenuOptions
-            text="Book A Delivery"
-            img={box}
-            onPress={() => navigation.navigate('Book')}
-          />
-          <MenuOptions
-            text="Hire A Rider"
-            img={rider}
-            onPress={() => alert('Coming Soon...')}
-          />
+    <KeyboardAvoidingView
+      style={{flex: 1}}
+      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+      enabled={false}>
+      <View style={styles.container}>
+        <View style={{height: '40%'}}>
+          <Header />
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-          }}>
-          <MenuOptions text="Past Rides" img={rides} />
-          <MenuOptions
-            text="Transactions"
-            img={transaction}
-            onPress={() => navigation.navigate('Transactions')}
-          />
+        <View style={{justifyContent: 'space-evenly', flex: 1}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-evenly',
+            }}>
+            <MenuOptions
+              text="Book A Delivery"
+              img={box}
+              onPress={() => navigation.navigate('Book')}
+            />
+            <MenuOptions
+              text="Hire A Rider"
+              img={rider}
+              onPress={() => alert('Coming Soon...')}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-evenly',
+            }}>
+            <MenuOptions text="Past Rides" img={rides} />
+            <MenuOptions
+              text="Transactions"
+              img={transaction}
+              onPress={() => navigation.navigate('Transactions')}
+            />
+          </View>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

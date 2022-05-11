@@ -10,7 +10,13 @@ const Book = () => {
 
   const Header = () => {
     return (
-      <View style={{padding: 18, flexDirection: 'row', alignItems: 'center'}}>
+      <View
+        style={{
+          paddingHorizontal: 15,
+          paddingVertical: 20,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon
             type={Icons.MaterialIcons}
@@ -48,13 +54,18 @@ export default Book;
 const styles = StyleSheet.create({
   textHeader: {
     fontFamily: 'MavenPro-Bold',
-    fontSize: 25,
+    fontSize: 23,
     color: Colors.black,
 
     marginLeft: 15,
   },
 
   textinput: {fontFamily: 'MavenPro-Bold', fontSize: 17, color: Colors.primary},
-  edittextinput: {fontFamily: 'MavenPro-Bold', fontSize: 15},
-  viewinput: {margin: 20, paddingLeft: 10},
+  edittextinput: {
+    fontFamily: 'MavenPro-Bold',
+    fontSize: 15,
+    borderBottomWidth: 2,
+    borderBottomColor: Colors.primary,
+  },
+  viewinput: {margin: 10, paddingLeft: 15},
 });

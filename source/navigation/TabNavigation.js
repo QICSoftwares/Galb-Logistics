@@ -14,6 +14,7 @@ export default function TabNavigation() {
         backgroundColor: Colors.bag1Bg,
       }}
       labeled={false}
+      detachInactiveScreens={false}
       activeColor={Colors.primary}
       screenListeners={({route}) => ({
         state: e => {
