@@ -148,7 +148,7 @@ export default Map;
 
 const styles = StyleSheet.create({
   map: {
-    //...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFillObject,
     height: SCREEN_HEIGHT,
     width: SCREEN_WIDTH,
     justifyContent: 'flex-end',

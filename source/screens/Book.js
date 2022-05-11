@@ -1,12 +1,19 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import React from 'react';
+import {StyleSheet, Text, View, TouchableOpacity, Button} from 'react-native';
+import React, {useRef, useState} from 'react';
 import Icon, {Icons} from '../components/Icons';
 import Colors from '../constants/Colors';
 import {useNavigation} from '@react-navigation/native';
 import {TextInput} from 'react-native-gesture-handler';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import firestore from '@react-native-firebase/firestore';
 
 const Book = () => {
   const navigation = useNavigation();
+
+  const [pickup, setPickup] = useState('');
+  const [dropoff, setDropoff] = useState('');
+  const [picknum, setPicknum] = useState('');
+  const [dropnum, setDropnum] = useState('');
 
   const Header = () => {
     return (
@@ -33,18 +40,88 @@ const Book = () => {
   const EditText = props => {
     return (
       <View style={styles.viewinput}>
-        <Text style={styles.textinput}>{props.text}</Text>
-        <TextInput
-          placeholder={props.placeholder}
-          style={styles.edittextinput}
+        <GooglePlacesAutocomplete
+          ref={ref}
+          nearbyPlacesAPI="GooglePlacesSearch"
+          placeholder={props.text}
+          listViewDisplayed="auto"
+          onPress={(data, details = null) => {
+            // 'details' is provided when fetchDetails = true
+            console.log(data, details);
+          }}
+          query={{
+            key: '***REMOVED***',
+            language: 'en',
+          }}
+          debounce={400}
+          autoFillOnNotFound={true}
+          onFail={error => console.error(error)}
+          styles={{
+            textInputContainer: {
+              backgroundColor: 'grey',
+            },
+            textInput: {
+              height: 45,
+              color: '#5d5d5d',
+              fontSize: 16,
+              fontFamily: 'MavenPro-Regular',
+            },
+            predefinedPlacesDescription: {
+              color: '#1faadb',
+            },
+          }}
         />
       </View>
     );
   };
   return (
-    <View>
+    <View style={{flex: 1}}>
       <Header />
-      <EditText text={'Input Pickup Address'} placeholder={'Pickup Address'} />
+      <TextInput
+        placeholder="Pickup Address"
+        value={pickup}
+        onChangeText={value => {
+          setPickup(value);
+        }}
+      />
+      <TextInput
+        placeholder="Dropoff Address"
+        value={dropoff}
+        onChangeText={value => {
+          setDropoff(value);
+        }}
+      />
+      <TextInput
+        placeholder="Pickup Number"
+        value={picknum}
+        onChangeText={value => {
+          setPicknum(value);
+        }}
+      />
+      <TextInput
+        placeholder="Dropoff Number"
+        value={dropnum}
+        onChangeText={value => {
+          setDropnum(value);
+        }}
+      />
+      <Button
+        title={'Next'}
+        onPress={() => {
+          firestore()
+            .collection('Delivery')
+            .doc('userid')
+            .set({
+              pickupAddress: pickup,
+              pickupPhoneNumber: picknum,
+              dropoffAddress: dropoff,
+              dropoffPhoneNumber: dropnum,
+            })
+            .then(() => {
+              console.log('Order added!');
+            });
+        }}
+      />
     </View>
   );
 };
@@ -67,5 +144,5 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: Colors.primary,
   },
-  viewinput: {margin: 10, paddingLeft: 15},
+  viewinput: {margin: 10, paddingHorizontal: 15},
 });

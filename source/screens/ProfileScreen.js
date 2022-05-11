@@ -66,7 +66,7 @@ const ProfileScreen = () => {
             name={'bank-transfer'}
             color={Colors.black}
             size={28}
-            onPress={() => navigation.navigate('Transactions')}
+            onPress={() => navigation.navigate('Signin')}
           />
           <Menu
             text={'Help & Support'}

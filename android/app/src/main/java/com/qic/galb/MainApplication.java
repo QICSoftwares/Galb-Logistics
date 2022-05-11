@@ -17,6 +17,7 @@ import com.facebook.react.bridge.JSIModulePackage; // <- add
 import com.swmansion.reanimated.ReanimatedJSIModulePackage; // <- add
 import com.wix.reactnativenotifications.RNNotificationsPackage;
 import androidx.multidex.MultiDexApplication; 
+import io.invertase.firebase.app.ReactNativeFirebaseAppPackage;
 
 public class MainApplication extends MultiDexApplication  implements ReactApplication {
 
@@ -32,7 +33,7 @@ public class MainApplication extends MultiDexApplication  implements ReactApplic
           @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
-          // packages.add(new MyReactNativePackage());
+           packages.add(new ReactNativeFirebaseAppPackage());
           return packages;
         }
 
