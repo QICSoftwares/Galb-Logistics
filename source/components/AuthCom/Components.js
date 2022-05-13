@@ -1,9 +1,15 @@
 import logoround from '../../assets/images/logoround.png';
 import Colors from '../../constants/Colors';
 import Icon from '../Icons';
-import {TextInput} from 'react-native-gesture-handler';
-import {StyleSheet, Text, View, Image} from 'react-native';
-import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useState} from 'react';
 
 export const Header = props => {
   return (
@@ -17,18 +23,42 @@ export const Header = props => {
 };
 
 export const Field = props => {
+  const [name, setName] = useState(props.name);
+  const [secure, setSecure] = useState(props.secureTextEntry);
+  const changePassicon = () => {
+    if (name == 'ios-eye') {
+      setName('ios-eye-off');
+      setSecure(true);
+    } else {
+      setName('ios-eye');
+      setSecure(false);
+    }
+  };
   return (
     <View style={{flexDirection: 'row', alignItems: 'center'}}>
       <View style={styles.field}>
         <View style={{paddingHorizontal: 5}}>
-          <Icon
-            type={props.type}
-            name={props.name}
-            color={props.color}
-            size={props.size}
-          />
+          <TouchableOpacity
+            hitSlop={{top: 20, bottom: 20, left: 50, right: 50}}
+            disabled={props.disabled}
+            onPress={changePassicon}>
+            <Icon
+              type={props.type}
+              name={name}
+              color={props.color}
+              size={props.size}
+            />
+          </TouchableOpacity>
         </View>
-        <TextInput placeholder={props.placeholder} style={styles.textinput} />
+        <TextInput
+          placeholder={props.placeholder}
+          style={styles.textinput}
+          keyboardType={props.keyboardType}
+          secureTextEntry={secure}
+          onChangeText={value => {
+            props.changeText(value);
+          }}
+        />
       </View>
     </View>
   );

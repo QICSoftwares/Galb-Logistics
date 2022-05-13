@@ -112,16 +112,13 @@ const Map = () => {
         error => {
           // See error code charts below.
           Alert.alert(error.message);
+
           console.log(error.code, error.message);
         },
         {
-          accuracy: {
-            android: 'medium',
-            ios: 'best',
-          },
-          enableHighAccuracy: true,
+          // enableHighAccuracy: true,
           timeout: 15000,
-          distanceFilter: 0,
+          //distanceFilter: 0,
           forceRequestLocation: true,
           forceLocationManager: true,
           showLocationDialog: true,
@@ -139,6 +136,7 @@ const Map = () => {
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         customMapStyle={mapStyle}
+        showUserLocation
       />
     </View>
   );

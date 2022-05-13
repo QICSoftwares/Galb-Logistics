@@ -8,7 +8,7 @@ const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Drawer"
+      initialRouteName="Loading"
       detachInactiveScreens={false}
       screenOptions={{header: () => null}}>
       <Stack.Screen name="Drawer" component={DrawerNavigation} />
@@ -21,6 +21,11 @@ const StackNavigation = () => {
       <Stack.Screen name="Support" component={Screen.SupportScreen} />
       <Stack.Screen name="Login" component={Screen.LoginScreen} />
       <Stack.Screen name="Signin" component={Screen.SignupScreen} />
+      <Stack.Screen name="Loading" component={Screen.Loading} />
+      <Stack.Screen
+        name="ForgotPasswordScreen"
+        component={Screen.ForgotPasswordScreen}
+      />
     </Stack.Navigator>
   );
 };

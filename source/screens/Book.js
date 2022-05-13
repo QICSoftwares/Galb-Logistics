@@ -5,7 +5,8 @@ import Colors from '../constants/Colors';
 import {useNavigation} from '@react-navigation/native';
 import {TextInput} from 'react-native-gesture-handler';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import firestore from '@react-native-firebase/firestore';
+import {PostFirestore} from '../firebase/Functions';
+import auth from '@react-native-firebase/auth';
 
 const Book = () => {
   const navigation = useNavigation();
@@ -74,6 +75,10 @@ const Book = () => {
       </View>
     );
   };
+
+  const callBack = () => {
+    console.log('Order added!');
+  };
   return (
     <View style={{flex: 1}}>
       <Header />
@@ -108,18 +113,17 @@ const Book = () => {
       <Button
         title={'Next'}
         onPress={() => {
-          firestore()
-            .collection('Delivery')
-            .doc('userid')
-            .set({
+          PostFirestore(
+            'Delivery',
+            auth().currentUser.uid,
+            {
               pickupAddress: pickup,
               pickupPhoneNumber: picknum,
               dropoffAddress: dropoff,
               dropoffPhoneNumber: dropnum,
-            })
-            .then(() => {
-              console.log('Order added!');
-            });
+            },
+            callBack,
+          );
         }}
       />
     </View>
