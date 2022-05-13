@@ -7,9 +7,8 @@ import {
   Platform,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Colors from '../constants/Colors';
-import {} from 'react-native-gesture-handler';
 import {SCREEN_WIDTH} from '../constants/Variables';
 import box from '../assets/images/box.png';
 import rider from '../assets/images/rider.png';
@@ -17,10 +16,14 @@ import rides from '../assets/images/rides.png';
 import transaction from '../assets/images/transaction.png';
 import Header from '../components/HomeCom/Header';
 import {useNavigation} from '@react-navigation/native';
+import {CheckLogin} from '../firebase/Functions';
 //import LottieView from 'lottie-react-native';
 
-const HomeScreen = () => {
+const HomeScreen = init => {
   const navigation = useNavigation();
+  const [initializing, setInitializing] = useState(init);
+  const [user, setUser] = useState();
+
   const MenuOptions = props => {
     return (
       <View>

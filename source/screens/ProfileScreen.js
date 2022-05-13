@@ -5,6 +5,7 @@ import Icon, {Icons} from '../components/Icons';
 import {useNavigation} from '@react-navigation/native';
 import BottomSheet from 'reanimated-bottom-sheet';
 import {Header, Balance, Menu} from '../components/ProfileCom/Components';
+import {Logout} from '../firebase/Functions';
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -84,6 +85,7 @@ const ProfileScreen = () => {
               name={'logout'}
               color={Colors.black}
               size={22}
+              onPress={() => Logout(navigation)}
             />
           </View>
         </View>

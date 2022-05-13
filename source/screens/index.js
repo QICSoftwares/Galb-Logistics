@@ -7,6 +7,8 @@ import Transactions from './Transactions';
 import SupportScreen from './SupportScreen';
 import LoginScreen from './LoginScreen';
 import SignupScreen from './SignupScreen';
+import Loading from './Loading';
+import ForgotPasswordScreen from './ForgotPasswordScreen';
 
 export {
   HomeScreen,
@@ -18,4 +20,6 @@ export {
   SupportScreen,
   LoginScreen,
   SignupScreen,
+  Loading,
+  ForgotPasswordScreen,
 };
