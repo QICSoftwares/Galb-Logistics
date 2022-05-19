@@ -1,5 +1,11 @@
-import {Text, View, TouchableOpacity} from 'react-native';
-import React, {useEffect, useState, useRef} from 'react';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StatusBar,
+  ActivityIndicator,
+} from 'react-native';
+import React, {useState, useRef} from 'react';
 import {Field, Header} from '../components/AuthCom/Components';
 import {Icons} from '../components/Icons';
 import Colors from '../constants/Colors';
@@ -7,7 +13,6 @@ import {useNavigation} from '@react-navigation/native';
 import {Login} from '../firebase/Functions';
 import {SendEmailVerification} from '../firebase/Functions';
 import DropdownAlert from 'react-native-dropdownalert';
-import {BackHandler} from 'react-native';
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -31,6 +36,7 @@ const LoginScreen = () => {
   };
 
   const callBack = error => {
+    setInit(false);
     if (error == 'verify') {
       Timer();
       Notify(
@@ -65,8 +71,11 @@ const LoginScreen = () => {
     }
   };
 
+  const [init, setInit] = useState(false);
+
   const LoginPress = () => {
     if (email.length > 0 && password.length > 0) {
+      setInit(true);
       Login(email, password, navigation, callBack);
     } else {
       Notify(
@@ -121,6 +130,7 @@ const LoginScreen = () => {
           paddingHorizontal: 20,
         }}>
         <TouchableOpacity
+          disabled={init}
           onPress={LoginPress}
           style={{
             backgroundColor: Colors.primary,
@@ -139,9 +149,13 @@ const LoginScreen = () => {
               height: 50,
               borderRadius: 180,
             }}>
-            <Text style={{fontFamily: 'MavenPro-Bold', color: Colors.white}}>
-              Login
-            </Text>
+            {init ? (
+              <ActivityIndicator color={Colors.white} />
+            ) : (
+              <Text style={{fontFamily: 'MavenPro-Bold', color: Colors.white}}>
+                Login
+              </Text>
+            )}
           </View>
         </TouchableOpacity>
 
@@ -214,6 +228,9 @@ const LoginScreen = () => {
       <Body />
       <Footer />
       <DropdownAlert
+        onClose={() => {
+          Platform.OS !== 'ios' && StatusBar.setBackgroundColor(Colors.primary);
+        }}
         ref={ref => {
           if (ref) {
             dropDownAlertRef = ref;

@@ -1,5 +1,5 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import * as Screen from '../screens';
 import Colors from '../constants/Colors';
 import TabNavigation from './TabNavigation';
@@ -7,6 +7,18 @@ import {View, Text, StyleSheet, Image} from 'react-native';
 import logoround from '../assets/images/logoround.png';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon, {Icons} from '../components/Icons';
+import {GetStore, SetStore} from '../constants/Functions';
+import {GetFireStore} from '../firebase/Functions';
+import {useDispatch} from 'react-redux';
+import {
+  changeBalance,
+  changeAddress,
+  changeEmail,
+  changeOrders,
+  changeName,
+  changePhonenumber,
+  changeUid,
+} from '../context/Slice';
 
 const Drawer = createDrawerNavigator();
 
@@ -34,7 +46,6 @@ const DrawerNavigation = () => {
               backgroundColor: Colors.blue,
             }}
             onPress={() => {
-              console.log(props.navigation);
               props.navigation.closeDrawer();
               props.navigation.jumpTo('Home');
             }}>
@@ -49,7 +60,10 @@ const DrawerNavigation = () => {
               ...styles.viewBody,
               backgroundColor: 'transparent',
             }}
-            onPress={props.navigation.closeDrawer}>
+            onPress={() => {
+              props.navigation.closeDrawer;
+              props.navigation.navigate('Rides');
+            }}>
             <Icon
               type={Icons.MaterialCommunityIcons}
               name={'bike-fast'}
@@ -65,7 +79,10 @@ const DrawerNavigation = () => {
               ...styles.viewBody,
               backgroundColor: 'transparent',
             }}
-            onPress={props.navigation.closeDrawer}>
+            onPress={() => {
+              props.navigation.closeDrawer();
+              props.navigation.navigate('Transactions');
+            }}>
             <Icon
               type={Icons.MaterialCommunityIcons}
               name={'bank-transfer'}
@@ -81,7 +98,10 @@ const DrawerNavigation = () => {
               ...styles.viewBody,
               backgroundColor: 'transparent',
             }}
-            onPress={props.navigation.closeDrawer}>
+            onPress={() => {
+              props.navigation.closeDrawer();
+              props.navigation.navigate('Support');
+            }}>
             <Icon
               type={Icons.MaterialCommunityIcons}
               name={'face-agent'}
@@ -111,6 +131,34 @@ const DrawerNavigation = () => {
       </View>
     );
   };
+  const dispatch = useDispatch();
+
+  const tesst = documentSnapshot => {
+    console.log(documentSnapshot);
+    dispatch(changeBalance(documentSnapshot.balance));
+    dispatch(changeAddress(documentSnapshot.address));
+    dispatch(changeUid(documentSnapshot.uid));
+    dispatch(changePhonenumber(documentSnapshot.phoneNumber));
+    dispatch(changeName(documentSnapshot.name));
+    dispatch(changeOrders(documentSnapshot.orders));
+    dispatch(changeEmail(documentSnapshot.email));
+  };
+
+  useEffect(() => {
+    var subscriber;
+    const fire = async () => {
+      subscriber = GetFireStore(
+        'Users',
+        await GetStore('uid').catch(error => {
+          console.log('drawer', error);
+        }),
+        tesst,
+      );
+    };
+    fire();
+
+    return () => subscriber();
+  }, []);
 
   return (
     <Drawer.Navigator

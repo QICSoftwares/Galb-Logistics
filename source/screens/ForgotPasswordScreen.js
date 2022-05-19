@@ -1,5 +1,11 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import React, {useRef, useEffect} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
+import React, {useRef, useState} from 'react';
 import {Field, Header} from '../components/AuthCom/Components';
 import DropdownAlert from 'react-native-dropdownalert';
 import {Icons} from '../components/Icons';
@@ -11,6 +17,7 @@ const ForgotPasswordScreen = () => {
   const navigation = useNavigation();
 
   var email = '';
+  const [init, setInit] = useState(false);
 
   let dropDownAlertRef = useRef();
 
@@ -19,6 +26,7 @@ const ForgotPasswordScreen = () => {
   };
 
   const callBack = e => {
+    setInit(false);
     if (e == 'email') {
       Notify(
         'Password Reset Email Sent',
@@ -35,6 +43,7 @@ const ForgotPasswordScreen = () => {
   };
   const Password = () => {
     if (email.length > 0) {
+      setInit(true);
       PasswordReset(email.trim(), callBack);
     } else {
       Notify(
@@ -80,6 +89,7 @@ const ForgotPasswordScreen = () => {
             height: 50,
             borderRadius: 180,
           }}
+          disabled={init}
           onPress={Password}>
           <View
             style={{
@@ -90,9 +100,13 @@ const ForgotPasswordScreen = () => {
               height: 50,
               borderRadius: 180,
             }}>
-            <Text style={{fontFamily: 'MavenPro-Bold', color: Colors.white}}>
-              Send Password Reset Email
-            </Text>
+            {init ? (
+              <ActivityIndicator color={Colors.white} />
+            ) : (
+              <Text style={{fontFamily: 'MavenPro-Bold', color: Colors.white}}>
+                Send Password Reset Email
+              </Text>
+            )}
           </View>
         </TouchableOpacity>
         <View style={{margin: 10, height: 20}}>

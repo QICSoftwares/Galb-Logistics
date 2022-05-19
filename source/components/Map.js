@@ -7,11 +7,12 @@ import {
   Platform,
   ToastAndroid,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {SCREEN_WIDTH, SCREEN_HEIGHT} from '../constants/Variables';
 import Geolocation from 'react-native-geolocation-service';
 import {mapStyle} from '../constants/MapStyle';
-//import {GOOGLE_MAPS_APIKEY} from '@env';
+import DropdownAlert from 'react-native-dropdownalert';
+import {GOOGLE_MAPS_APIKEY} from '@env';
 
 const Map = () => {
   const [region, setRegion] = useState({
@@ -111,7 +112,7 @@ const Map = () => {
         },
         error => {
           // See error code charts below.
-          Alert.alert(error.message);
+          Notify('Determining Location Error', error.message, 'error');
 
           console.log(error.code, error.message);
         },
@@ -129,6 +130,12 @@ const Map = () => {
     getLocation();
   }, []);
 
+  let dropDownAlertRef = useRef();
+
+  const Notify = (title, message, type) => {
+    dropDownAlertRef.alertWithType(type, title, message);
+  };
+
   return (
     <View>
       <MapView
@@ -137,6 +144,21 @@ const Map = () => {
         style={styles.map}
         customMapStyle={mapStyle}
         showUserLocation
+      />
+      <DropdownAlert
+        zIndex={7000}
+        updateStatusBar={false}
+        defaultContainer={{
+          flexDirection: 'row',
+          paddingTop: 25,
+          paddingHorizontal: 8,
+          paddingBottom: 15,
+        }}
+        ref={ref => {
+          if (ref) {
+            dropDownAlertRef = ref;
+          }
+        }}
       />
     </View>
   );

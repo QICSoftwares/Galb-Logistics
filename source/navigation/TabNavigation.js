@@ -54,6 +54,10 @@ export default function TabNavigation() {
       <Tab.Screen
         name="Profile"
         component={Screen.ProfileScreen}
+        initialParams={{
+          mode: 'no',
+          link: '',
+        }}
         options={{
           tabBarIcon: ({color}) => (
             <Icon type={Icons.Entypo} name="wallet" color={color} size={22} />

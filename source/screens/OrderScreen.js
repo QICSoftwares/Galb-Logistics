@@ -5,7 +5,6 @@ import Orders from '../components/OrderCom/Orders';
 import BottomSheet from 'reanimated-bottom-sheet';
 import TopBar from '../components/OrderCom/TopBar';
 import {SCREEN_WIDTH} from '../constants/Variables';
-import Colors from '../constants/Colors';
 
 let MARGIN = StatusBar.currentHeight;
 

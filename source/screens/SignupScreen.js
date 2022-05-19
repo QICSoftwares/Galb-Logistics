@@ -1,4 +1,12 @@
-import {Text, View, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  View,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+  Platform,
+  StatusBar,
+  ActivityIndicator,
+} from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import {Field, Header} from '../components/AuthCom/Components';
 import {Icons} from '../components/Icons';
@@ -16,12 +24,14 @@ const SignupScreen = () => {
   var password = '';
 
   let dropDownAlertRef = useRef();
+  const [init, setInit] = useState(false);
 
   const Notify = (title, message, type) => {
     dropDownAlertRef.alertWithType(type, title, message);
   };
 
   const callBack = error => {
+    setInit(false);
     if (error == 'verify') {
       Notify(
         'Please Verify Email Address',
@@ -103,6 +113,7 @@ const SignupScreen = () => {
       name.length > 0 &&
       phonenumber.length > 0
     ) {
+      setInit(true);
       CreateAcc(email, password, name, phonenumber, navigation, callBack);
     } else {
       Notify(
@@ -132,6 +143,7 @@ const SignupScreen = () => {
             height: 50,
             borderRadius: 180,
           }}
+          disabled={init}
           onPress={SignUpPress}>
           <View
             style={{
@@ -142,9 +154,13 @@ const SignupScreen = () => {
               height: 50,
               borderRadius: 180,
             }}>
-            <Text style={{fontFamily: 'MavenPro-Bold', color: Colors.white}}>
-              SignUp
-            </Text>
+            {init ? (
+              <ActivityIndicator color={Colors.white} />
+            ) : (
+              <Text style={{fontFamily: 'MavenPro-Bold', color: Colors.white}}>
+                SignUp
+              </Text>
+            )}
           </View>
         </TouchableOpacity>
         <View style={{margin: 10, height: 20}}>
@@ -163,18 +179,27 @@ const SignupScreen = () => {
     );
   };
   return (
-    <View style={{flex: 1}}>
-      <Header head={'Welcome'} subhead={'Create your account'} />
-      <Body />
-      <Footer />
-      <DropdownAlert
-        ref={ref => {
-          if (ref) {
-            dropDownAlertRef = ref;
-          }
-        }}
-      />
-    </View>
+    <KeyboardAvoidingView
+      style={{flex: 1}}
+      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+      enabled={false}>
+      <View style={{flex: 1}}>
+        <Header head={'Welcome'} subhead={'Create your account'} />
+        <Body />
+        <Footer />
+        <DropdownAlert
+          onClose={() => {
+            Platform.OS !== 'ios' &&
+              StatusBar.setBackgroundColor(Colors.primary);
+          }}
+          ref={ref => {
+            if (ref) {
+              dropDownAlertRef = ref;
+            }
+          }}
+        />
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 

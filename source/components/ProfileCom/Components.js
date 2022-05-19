@@ -4,9 +4,15 @@ import logoround from '../../assets/images/logoround.png';
 import Icon, {Icons} from '../Icons';
 import {useNavigation} from '@react-navigation/native';
 import Colors from '../../constants/Colors';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import {MMKVLoader} from 'react-native-mmkv-storage';
+import {useSelector} from 'react-redux';
 
-export const Balance = () => {
+MMKV = new MMKVLoader().initialize();
+
+export const Balance = props => {
+  const balance = useSelector(state => state.user.balance);
+
   return (
     <View style={styles.balanceview}>
       <View
@@ -22,7 +28,9 @@ export const Balance = () => {
         />
       </View>
       <View style={{justifyContent: 'center', flex: 1}}>
-        <Text style={styles.amounttext}>N 25,000</Text>
+        <Text style={styles.amounttext}>
+          ₦ {balance.toString().includes('.') ? balance : `${balance}.00`}
+        </Text>
       </View>
       <View
         style={{
@@ -30,9 +38,34 @@ export const Balance = () => {
           justifyContent: 'space-between',
           padding: 8,
         }}>
-        <Deposit />
-        <Withdraw />
+        <Deposit deposit={props.deposit} />
+        <Withdraw withdraw={props.withdraw} />
       </View>
+    </View>
+  );
+};
+
+export const Address = props => {
+  const address = useSelector(state => state.user.address);
+
+  return (
+    <View style={styles.addressview}>
+      {address.length < 1 ? (
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <Icon
+            type={Icons.Entypo}
+            name={'address'}
+            color={Colors.black}
+            size={40}
+          />
+
+          <Text style={styles.addresstext}>Your Address Book Is Empty</Text>
+        </View>
+      ) : (
+        <View>
+          <Text>it usnt</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -60,10 +93,12 @@ export const Menu = props => {
   );
 };
 
-const Deposit = () => {
+const Deposit = props => {
   return (
     <View style={styles.buttons}>
       <TouchableOpacity
+        onPress={() => props.deposit()}
+        hitSlop={{top: 20, bottom: 20, left: 50, right: 50}}
         style={{
           backgroundColor: Colors.white,
           borderRadius: 10,
@@ -78,16 +113,19 @@ const Deposit = () => {
   );
 };
 
-const Withdraw = () => {
+const Withdraw = props => {
   return (
     <View style={styles.buttons}>
       <TouchableOpacity
+        onPress={() => props.withdraw()}
+        hitSlop={{top: 20, bottom: 20, left: 80, right: 80}}
         style={{
           backgroundColor: Colors.white,
           width: '100%',
           height: 40,
           justifyContent: 'center',
           alignItems: 'center',
+          flex: 1,
         }}>
         <Text style={styles.textbut}>Withdraw</Text>
       </TouchableOpacity>
@@ -97,6 +135,7 @@ const Withdraw = () => {
 
 export const Header = () => {
   const navigation = useNavigation();
+  const user = useSelector(state => state.user.name);
 
   return (
     <View
@@ -113,7 +152,7 @@ export const Header = () => {
         size={35}
       />
 
-      <Text style={styles.text}>Benjamin Eruvieru</Text>
+      <Text style={styles.text}>{user}</Text>
 
       <View style={{alignItems: 'flex-end', flex: 1}}>
         <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
@@ -128,6 +167,17 @@ export const Header = () => {
   );
 };
 
+export const generateTransactionRef = length => {
+  var result = '';
+  var characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return `flw_tx_ref_${result}`;
+};
+
 const styles = StyleSheet.create({
   balanceview: {
     backgroundColor: Colors.primary,
@@ -136,6 +186,11 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 8,
     justifyContent: 'space-between',
+  },
+  addressview: {
+    height: '85%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   baltext: {
@@ -149,6 +204,11 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
 
+  addresstext: {
+    marginTop: 20,
+    fontFamily: 'MavenPro-SemiBold',
+    color: Colors.black,
+  },
   menutext: {
     fontFamily: 'MavenPro-SemiBold',
     color: Colors.black,
