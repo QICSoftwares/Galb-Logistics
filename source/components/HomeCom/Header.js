@@ -5,18 +5,27 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import Icon, {Icons} from '../Icons';
 import Colors from '../../constants/Colors';
+import {MMKVLoader} from 'react-native-mmkv-storage';
+import {useSelector} from 'react-redux';
+
+MMKV = new MMKVLoader().initialize();
 
 const Header = () => {
   const navigation = useNavigation();
+  const name = useSelector(state => state.user.name);
 
+  const [user, setUser] = useState();
+  useEffect(() => {
+    setUser(name.split(' ')[0]); // Logs 'string';
+  }, [name]);
   const HeaderText = () => {
     return (
       <View style={{flex: 2, justifyContent: 'center'}}>
-        <Text style={styles.headertext}>Hi Galb!</Text>
+        <Text style={styles.headertext}>Hi {user}!</Text>
       </View>
     );
   };
@@ -63,7 +72,7 @@ const Header = () => {
         <TouchableOpacity style={{}} onPress={() => navigation.openDrawer()}>
           <Icon type={Icons.Feather} name={'menu'} color={Colors.white} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
           <Icon
             type={Icons.Ionicons}
             name={'notifications-outline'}

@@ -9,7 +9,8 @@ import LoginScreen from './LoginScreen';
 import SignupScreen from './SignupScreen';
 import Loading from './Loading';
 import ForgotPasswordScreen from './ForgotPasswordScreen';
-
+import Rides from './Rides';
+import Webview from './Webview';
 export {
   HomeScreen,
   OrderScreen,
@@ -22,4 +23,6 @@ export {
   SignupScreen,
   Loading,
   ForgotPasswordScreen,
+  Rides,
+  Webview,
 };

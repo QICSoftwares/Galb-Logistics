@@ -12,12 +12,15 @@
   "dependencies": {
     "@react-native-firebase/app": "^14.9.3",
     "@react-native-firebase/auth": "^14.9.3",
-    "@react-native-firebase/dynamic-links": "^14.9.3",
+    "@react-native-firebase/dynamic-links": "^14.9.4",
     "@react-native-firebase/firestore": "^14.9.3",
+    "@react-native-firebase/functions": "^14.9.4",
     "@react-navigation/drawer": "^6.4.1",
     "@react-navigation/material-bottom-tabs": "^6.2.1",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.2",
+    "@reduxjs/toolkit": "^1.8.1",
+    "flutterwave-react-native": "^1.0.2",
     "react": "17.0.2",
     "react-native": "0.68.1",
     "react-native-alert-notification": "^0.1.13",
@@ -37,7 +40,10 @@
     "react-native-svg": "^12.3.0",
     "react-native-svg-transformer": "^1.0.0",
     "react-native-vector-icons": "^9.1.0",
-    "reanimated-bottom-sheet": "^1.0.0-alpha.22"
+    "react-native-webview": "^11.18.2",
+    "react-redux": "^8.0.1",
+    "reanimated-bottom-sheet": "^1.0.0-alpha.22",
+    "redux": "^4.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.10",
