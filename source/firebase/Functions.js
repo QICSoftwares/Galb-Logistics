@@ -1,8 +1,8 @@
 import auth from '@react-native-firebase/auth';
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 import firestore from '@react-native-firebase/firestore';
-import {MMKVLoader} from 'react-native-mmkv-storage';
-import {Notifications} from 'react-native-notifications';
+import { MMKVLoader } from 'react-native-mmkv-storage';
+import { Notifications } from 'react-native-notifications';
 
 MMKV = new MMKVLoader().initialize();
 
@@ -69,9 +69,9 @@ export const CreateAcc = (
         phonenumber: phonenumber.trim(),
         uid: user.user.uid,
         balance: 0.0,
-        orders: [],
+        orders: ["null"],
         address: [],
-        token: {token},
+        token: [token],
       });
 
       setTimeout(() => {
@@ -88,7 +88,7 @@ export const PostFirestore = (collection, doc, items) => {
     .collection(collection)
     .doc(doc)
     .set(items)
-    .then(() => {})
+    .then(() => { })
     .catch(e => {
       alert(e);
     });
@@ -100,7 +100,7 @@ export const Logout = navigation => {
     .then(() => {
       navigation.reset({
         index: 0,
-        routes: [{name: 'Signin'}],
+        routes: [{ name: 'Signin' }],
       });
       navigation.navigate('Signin');
     })
@@ -120,14 +120,14 @@ export const Login = (email, password, navigation, callBack) => {
           await MMKV.setStringAsync('name', u._data.name.trim());
 
           await MMKV.setStringAsync('uid', u._data.uid)
-          .catch(error => {
-            console.log(error);
-          });
+            .catch(error => {
+              console.log(error);
+            });
         };
 
         callBackk()
           .then(() => {
-            navigation.navigate('Drawer');
+            navigation.navigate('Drawer', { uid: user.user.uid });
           })
           .catch(error => {
             console.log(error);

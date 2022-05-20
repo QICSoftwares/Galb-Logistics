@@ -1,15 +1,15 @@
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import React, {useState, useEffect} from 'react';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import React, { useState, useEffect } from 'react';
 import * as Screen from '../screens';
 import Colors from '../constants/Colors';
 import TabNavigation from './TabNavigation';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import logoround from '../assets/images/logoround.png';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import Icon, {Icons} from '../components/Icons';
-import {GetStore, SetStore} from '../constants/Functions';
-import {GetFireStore} from '../firebase/Functions';
-import {useDispatch} from 'react-redux';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Icon, { Icons } from '../components/Icons';
+import { GetStore, SetStore } from '../constants/Functions';
+import { GetFireStore } from '../firebase/Functions';
+import { useDispatch } from 'react-redux';
 import {
   changeBalance,
   changeAddress,
@@ -19,16 +19,19 @@ import {
   changePhonenumber,
   changeUid,
 } from '../context/Slice';
+import { useRoute } from '@react-navigation/native';
 
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigation = () => {
+  const route = useRoute();
+  const { uid } = route.params;
   const DrawerHead = () => {
     return (
       <View style={styles.drawerHead}>
         <Image
           source={logoround}
-          style={{height: 70, width: 70}}
+          style={{ height: 70, width: 70 }}
           resizeMode={'contain'}
         />
         <Text style={styles.textHead1}>Galb Logitics</Text>
@@ -149,7 +152,7 @@ const DrawerNavigation = () => {
     const fire = async () => {
       subscriber = GetFireStore(
         'Users',
-        await GetStore('uid').catch(error => {
+        uid == 'no' ? await GetStore('uid') : uid.catch(error => {
           console.log('drawer', error);
         }),
         tesst,

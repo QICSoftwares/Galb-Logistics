@@ -1,4 +1,4 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import DrawerNavigation from './DrawerNavigation';
 import * as Screen from '../screens';
@@ -10,8 +10,10 @@ const StackNavigation = () => {
     <Stack.Navigator
       initialRouteName="Loading"
       detachInactiveScreens={false}
-      screenOptions={{header: () => null}}>
-      <Stack.Screen name="Drawer" component={DrawerNavigation} />
+      screenOptions={{ header: () => null }}>
+      <Stack.Screen name="Drawer" component={DrawerNavigation} initialParams={{
+        uid: 'no',
+      }} />
       <Stack.Screen name="Book" component={Screen.Book} />
       <Stack.Screen
         name="Notifications"
