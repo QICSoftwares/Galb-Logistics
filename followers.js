@@ -13,10 +13,10 @@
       "created_at": "2022-05-18T18:34:16.000Z",
         "currency": "NGN",
           "customer": {
-            "created_at": "2022-05-18T18:34:16.000Z",
-              "email": "etuvietu@gmail.com",
-                "id": 369231217, "name": "Oghenekaro Eruvieru",
-                  "phone_number": "N/A"
+      "created_at": "2022-05-18T18:34:16.000Z",
+        "email": "etuvietu@gmail.com",
+          "id": 369231217, "name": "Oghenekaro Eruvieru",
+            "phone_number": "N/A"
     },
     "device_fingerprint": "28bbfb9d8a12d1d8cc70d23b0057b6e2",
       "flw_ref": "KicksCitiEnterp/JFGB11351009957937",

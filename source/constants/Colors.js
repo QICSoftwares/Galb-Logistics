@@ -6,6 +6,7 @@ export default {
   lightblue: '#01579B',
   accent: '#26a69a',
   blue: '#E3F2FD',
+  lightred: '#FEF5F5',
   // bags background colors
   bag1Bg: 'white',
 };

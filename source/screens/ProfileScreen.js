@@ -31,7 +31,11 @@ import { FLW_API } from '@env';
 import { firebase } from '@react-native-firebase/functions';
 
 const ProfileScreen = () => {
-  console.log(FLW_API);
+
+  let API = FLW_API.replace("'", "")
+  API = API.replace("'", "")
+  API = API.replace(";", "")
+  console.log(API);
   const route = useRoute();
   const { mode, link } = route.params;
 
@@ -76,21 +80,17 @@ const ProfileScreen = () => {
   };
 
   const confirmTransaction = async txid => {
-    Notify('Confirming Transaction', 'This may take few minutes don\'t close the app', 'warn');
     const { data } = await firebase.functions().httpsCallable('confirmTx')({
       id: txid,
-      uid: uid
+      uid: uid,
     });
     console.log(data);
     if (data.status === 'success') {
       Notify('Success', 'The transaction was successful', 'success');
     } else {
       Notify('Failed', 'The transaction was not successful', 'error');
-
     }
   };
-
-
 
   const Bar = () => {
     return (
@@ -277,7 +277,7 @@ const ProfileScreen = () => {
             // initialize payment
             const paymentLink = await FlutterwaveInit({
               tx_ref: generateTransactionRef(20),
-              authorization: '***REMOVED***',
+              authorization: API,
               amount: amount,
               currency: 'NGN',
               customer: {

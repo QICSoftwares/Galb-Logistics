@@ -8,14 +8,15 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Keyboard
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 export const Header = props => {
   return (
     <View
-      style={{alignItems: 'center', height: '50%', justifyContent: 'center'}}>
-      <Image source={logoround} style={{height: 150, width: 150}} />
+      style={{ alignItems: 'center', height: '50%', justifyContent: 'center' }}>
+      <Image source={logoround} style={{ height: 150, width: 150 }} />
       <Text style={styles.textheadmain}>{props.head}</Text>
       <Text style={styles.textheader}>{props.subhead}</Text>
     </View>
@@ -34,12 +35,31 @@ export const Field = props => {
       setSecure(false);
     }
   };
+
+  const inputRef = useRef(null)
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => { },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        inputRef.current.blur();
+      },
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
   return (
-    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
       <View style={styles.field}>
-        <View style={{paddingHorizontal: 5}}>
+        <View style={{ paddingHorizontal: 5 }}>
           <TouchableOpacity
-            hitSlop={{top: 20, bottom: 20, left: 50, right: 50}}
+            hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}
             disabled={props.disabled}
             onPress={changePassicon}>
             <Icon
@@ -51,6 +71,7 @@ export const Field = props => {
           </TouchableOpacity>
         </View>
         <TextInput
+          ref={inputRef}
           placeholder={props.placeholder}
           style={styles.textinput}
           keyboardType={props.keyboardType}
@@ -81,7 +102,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     shadowColor: 'black',
     shadowOpacity: 0.26,
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowRadius: 10,
     flex: 1,
     height: 50,

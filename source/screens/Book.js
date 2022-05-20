@@ -51,7 +51,7 @@ const Book = () => {
             console.log(data, details);
           }}
           query={{
-            key: '***REMOVED***',
+            key: 'AIzaSyDYb4eMyN3H-ap41sSIEEF8Fpv5H1rEW9k',
             language: 'en',
           }}
           debounce={400}
