@@ -62,3 +62,4 @@ buck-out/
 /vendor/bundle/
 android/app/src/main/AndroidManifest.xml
 android/app/src/main/res/values/google_maps_api.xml
+password.txt

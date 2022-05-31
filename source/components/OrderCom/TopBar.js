@@ -11,15 +11,37 @@ const TopBar = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Icon
-          type={Icons.MaterialIcons}
-          name={'arrow-back'}
-          color={Colors.black}
-          size={30}
-        />
-      </TouchableOpacity>
-
+      <View
+        style={{
+          height: 40,
+          width: 40,
+          backgroundColor: Colors.white,
+          position: 'absolute',
+          left: 0,
+          borderRadius: 50,
+          shadowColor: 'black',
+          shadowOpacity: 0.26,
+          shadowOffset: {width: 0, height: 2},
+          shadowRadius: 10,
+          elevation: 5,
+        }}></View>
+      <View
+        style={{
+          height: 40,
+          width: 40,
+          justifyContent: 'center',
+          alignItems: 'center',
+          elevation: 10,
+        }}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon
+            type={Icons.MaterialIcons}
+            name={'arrow-back'}
+            color={Colors.black}
+            size={26}
+          />
+        </TouchableOpacity>
+      </View>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Text
           style={{

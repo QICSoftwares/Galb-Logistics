@@ -1,21 +1,44 @@
 import {StyleSheet, Text, View, TouchableOpacity, Button} from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Icon, {Icons} from '../components/Icons';
 import Colors from '../constants/Colors';
 import {useNavigation} from '@react-navigation/native';
 import {TextInput} from 'react-native-gesture-handler';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {PostFirestore} from '../firebase/Functions';
 import auth from '@react-native-firebase/auth';
+import {GOOGLE_MAPS_APIKEY} from '@env';
+import Geocoder from 'react-native-geocoding';
+import {useSelector} from 'react-redux';
+import firestore from '@react-native-firebase/firestore';
+
+Geocoder.init(GOOGLE_MAPS_APIKEY);
 
 const Book = () => {
   const navigation = useNavigation();
+  const uid = useSelector(state => state.user.uid);
 
   const [pickup, setPickup] = useState('');
   const [dropoff, setDropoff] = useState('');
   const [picknum, setPicknum] = useState('');
   const [dropnum, setDropnum] = useState('');
+  const [corDrop, setCorDrop] = useState({
+    lat: 6.443772399999999,
+    lng: 3.25729,
+  });
+  const [corPick, setCorPick] = useState({
+    lat: 6.454633800000001,
+    lng: 3.2404206,
+  });
 
+  const generateID = () => {
+    let id = '';
+    let i = 0;
+    while (i <= 10) {
+      id += Math.floor(Math.random() * 10);
+      i++;
+    }
+    return 'GBL-' + id;
+  };
   const Header = () => {
     return (
       <View
@@ -76,9 +99,55 @@ const Book = () => {
     );
   };
 
-  const callBack = () => {
-    console.log('Order added!');
+  const handleBooking = async () => {
+    Geocoder.from(pickup, {
+      southwest: {lat: 6.341744, lng: 2.673407},
+      northeast: {lat: 6.912368, lng: 4.386877},
+    })
+      .then(json => {
+        var location = json.results[0].geometry.location;
+        console.log('pickup ', location);
+        setCorPick(location);
+      })
+      .catch(error => console.warn(error));
+
+    Geocoder.from(dropoff, {
+      southwest: {lat: 6.341744, lng: 2.673407},
+      northeast: {lat: 6.912368, lng: 4.386877},
+    })
+      .then(json => {
+        var location = json.results[0].geometry.location;
+        console.log('dropoff ', location);
+        setCorDrop(location);
+      })
+      .catch(error => console.warn(error));
   };
+
+  useEffect(() => {
+    if (corDrop !== null && corPick !== null) {
+      firestore()
+        .collection('Delivery')
+        .doc(uid)
+        .collection('Orders')
+        .doc(generateID())
+        .set({
+          pickupAddress: pickup,
+          pickupPhoneNumber: picknum,
+          dropoffAddress: dropoff,
+          dropoffPhoneNumber: dropnum,
+          dropoffGeo: new firestore.GeoPoint(corDrop.lat, corDrop.lng),
+          pickupGeo: new firestore.GeoPoint(corPick.lat, corPick.lng),
+          uid: uid,
+        })
+        .then(() => {
+          console.log('Order added!');
+        })
+        .catch(e => {
+          alert(e);
+        });
+    }
+  }, [corPick, corDrop]);
+
   return (
     <View style={{flex: 1}}>
       <Header />
@@ -110,22 +179,7 @@ const Book = () => {
           setDropnum(value);
         }}
       />
-      <Button
-        title={'Next'}
-        onPress={() => {
-          PostFirestore(
-            'Delivery',
-            auth().currentUser.uid,
-            {
-              pickupAddress: pickup,
-              pickupPhoneNumber: picknum,
-              dropoffAddress: dropoff,
-              dropoffPhoneNumber: dropnum,
-            },
-            callBack,
-          );
-        }}
-      />
+      <Button title={'Next'} onPress={handleBooking} />
     </View>
   );
 };

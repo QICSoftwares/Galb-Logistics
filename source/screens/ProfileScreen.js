@@ -9,10 +9,10 @@ import {
   ActivityIndicator,
   StatusBar,
 } from 'react-native';
-import React, { useRef, useState, useEffect } from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import Colors from '../constants/Colors';
-import { Icons } from '../components/Icons';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import {Icons} from '../components/Icons';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import BottomSheet from 'reanimated-bottom-sheet';
 import {
   Header,
@@ -21,41 +21,32 @@ import {
   Address,
   generateTransactionRef,
 } from '../components/ProfileCom/Components';
-import { Logout } from '../firebase/Functions';
-import { Modal, Portal, Provider } from 'react-native-paper';
+import {Logout} from '../firebase/Functions';
+import {Modal, Portal, Provider} from 'react-native-paper';
 import rider from '../assets/images/rider.png';
-import { FlutterwaveInit } from 'flutterwave-react-native';
-import { useSelector } from 'react-redux';
+import {FlutterwaveInit} from 'flutterwave-react-native';
+import {useSelector} from 'react-redux';
 import DropdownAlert from 'react-native-dropdownalert';
-import { FLW_API } from '@env';
-import { firebase } from '@react-native-firebase/functions';
+import {FLW_API} from '@env';
+import {firebase} from '@react-native-firebase/functions';
 
 const ProfileScreen = () => {
-
-  let API = FLW_API.replace("'", "")
-  API = API.replace("'", "")
-  API = API.replace(";", "")
-  console.log(API);
+  console.log(FLW_API);
   const route = useRoute();
-  const { mode, link } = route.params;
-
+  const {mode, link} = route.params;
+  const [btmsh, setBtmsh] = useState('');
+  const [visible, setVisible] = useState(false);
   const name = useSelector(state => state.user.name);
   const email = useSelector(state => state.user.email);
   const uid = useSelector(state => state.user.uid);
-
   const phonenumber = useSelector(state => state.user.phonenumber);
-
-  const [visible, setVisible] = useState(false);
-
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
-
   const navigation = useNavigation();
-
-  const [btmsh, setBtmsh] = useState('');
-
   const sheetRef = useRef(null);
   const inputRef = useRef(null);
+  const input1Ref = useRef(null);
+  const input2Ref = useRef(null);
 
   useEffect(() => {
     if (mode === 'Redirect') {
@@ -80,7 +71,7 @@ const ProfileScreen = () => {
   };
 
   const confirmTransaction = async txid => {
-    const { data } = await firebase.functions().httpsCallable('confirmTx')({
+    const {data} = await firebase.functions().httpsCallable('confirmTx')({
       id: txid,
       uid: uid,
     });
@@ -113,7 +104,7 @@ const ProfileScreen = () => {
 
   const HeadSheet = props => {
     return (
-      <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
+      <View style={{justifyContent: 'center', flexDirection: 'row'}}>
         <Text style={styles.texthead}>{props.head}</Text>
       </View>
     );
@@ -130,7 +121,7 @@ const ProfileScreen = () => {
         <Image
           source={rider}
           resizeMode={'contain'}
-          style={{ height: 70, width: 70 }}
+          style={{height: 70, width: 70}}
         />
         <View
           style={{
@@ -143,10 +134,10 @@ const ProfileScreen = () => {
           }}>
           <TextInput
             placeholder="Enter Order Number"
-            style={{ flex: 1, fontFamily: 'MavenPro-Medium' }}
+            style={{flex: 1, fontFamily: 'MavenPro-Medium'}}
           />
         </View>
-        <View style={{ width: '50%', height: 40 }}>
+        <View style={{width: '50%', height: 40}}>
           <TouchableOpacity
             style={{
               backgroundColor: Colors.black,
@@ -156,7 +147,7 @@ const ProfileScreen = () => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Text style={{ color: Colors.white, fontFamily: 'MavenPro-Medium' }}>
+            <Text style={{color: Colors.white, fontFamily: 'MavenPro-Medium'}}>
               Track Order
             </Text>
           </TouchableOpacity>
@@ -196,11 +187,11 @@ const ProfileScreen = () => {
               <Address />
             </View>
           ) : btmsh == 'deposit' ? (
-            <View style={{ height: '100%' }}>
+            <View style={{height: '100%'}}>
               <DepositScreen />
             </View>
           ) : (
-            <View style={{ height: '100%' }}>
+            <View style={{height: '100%'}}>
               <HeadSheet head={'Withdraw'} />
               <WithdrawScreen />
             </View>
@@ -239,7 +230,7 @@ const ProfileScreen = () => {
     useEffect(() => {
       const keyboardDidShowListener = Keyboard.addListener(
         'keyboardDidShow',
-        () => { },
+        () => {},
       );
       const keyboardDidHideListener = Keyboard.addListener(
         'keyboardDidHide',
@@ -259,7 +250,7 @@ const ProfileScreen = () => {
       setInit(false);
       setAmount('');
       sheetRef.current.snapTo(1);
-      navigation.navigate('Webview', { link: data });
+      navigation.navigate('Webview', {link: data});
     };
     const onWillInitialize = async () => {
       console.log('initialing');
@@ -277,7 +268,7 @@ const ProfileScreen = () => {
             // initialize payment
             const paymentLink = await FlutterwaveInit({
               tx_ref: generateTransactionRef(20),
-              authorization: API,
+              authorization: FLW_API,
               amount: amount,
               currency: 'NGN',
               customer: {
@@ -306,7 +297,7 @@ const ProfileScreen = () => {
     };
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <HeadSheet head={'Deposit'} />
 
         <View
@@ -377,9 +368,112 @@ const ProfileScreen = () => {
   };
 
   const WithdrawScreen = () => {
+    const [amount, setAmount] = useState('');
+    const [init, setInit] = useState(false);
+
+    const handleTransfer = async amount => {
+      if (amount.length > 0) {
+        if (parseInt(amount) < 200) {
+          Notify('Increase Top Up', 'Amount cannot be less than N200', 'warn');
+        } else {
+          const data = await firebase.functions().httpsCallable('performTf')({
+            details: {
+              account_bank: '044',
+              account_number: '0690000031',
+              amount: 200,
+              narration: 'Payment for things',
+              currency: 'NGN',
+              reference: generateTransactionRef(20),
+              debit_currency: 'NGN',
+            },
+          });
+          console.log(data);
+        }
+      } else {
+        Notify(
+          'Amount Empty',
+          'Please input the amount you want to deposit',
+          'error',
+        );
+      }
+    };
+    useEffect(() => {
+      const keyboardDidShowListener = Keyboard.addListener(
+        'keyboardDidShow',
+        () => {},
+      );
+      const keyboardDidHideListener = Keyboard.addListener(
+        'keyboardDidHide',
+        () => {
+          input1Ref.current.blur();
+        },
+      );
+
+      return () => {
+        keyboardDidHideListener.remove();
+        keyboardDidShowListener.remove();
+      };
+    }, []);
+
     return (
       <View>
-        <Text>Yh</Text>
+        <View
+          style={{
+            height: 60,
+            borderRadius: 10,
+            borderWidth: 2,
+            borderColor: Colors.black,
+            width: '75%',
+            alignSelf: 'center',
+            marginVertical: 50,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              paddingLeft: 13,
+              color: Colors.black,
+              fontFamily: 'MavenPro-Bold',
+              fontSize: 20,
+            }}>
+            ₦
+          </Text>
+          <TextInput
+            ref={input1Ref}
+            placeholder={'Input Amount'}
+            defaultValue={amount}
+            style={styles.textinput}
+            keyboardType={'number-pad'}
+            onChangeText={value => setAmount(value)}
+          />
+        </View>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <TouchableOpacity
+            disabled={init}
+            style={{
+              backgroundColor: Colors.black,
+              borderRadius: 360,
+              padding: 12,
+            }}
+            onPress={() => handleTransfer(amount)}>
+            {init ? (
+              <ActivityIndicator color={Colors.white} />
+            ) : (
+              <Text
+                style={{
+                  color: Colors.white,
+                  fontFamily: 'MavenPro-Bold',
+                  fontSize: 15,
+                }}>
+                Withdraw Now
+              </Text>
+            )}
+          </TouchableOpacity>
+        </View>
       </View>
     );
   };
@@ -388,8 +482,8 @@ const ProfileScreen = () => {
     <>
       <Provider>
         <Portal>
-          <View style={{ flex: 1 }}>
-            <View style={{ flex: 1, padding: 16 }}>
+          <View style={{flex: 1}}>
+            <View style={{flex: 1, padding: 16}}>
               <Header />
               <Balance deposit={Deposit} withdraw={Withdraw} />
               <View
@@ -424,7 +518,7 @@ const ProfileScreen = () => {
                   name={'bank-transfer'}
                   color={Colors.black}
                   size={28}
-                  onPress={() => navigation.navigate('Signin')}
+                  onPress={() => navigation.navigate('Transactions')}
                 />
                 <Menu
                   text={'Help & Support'}
@@ -435,7 +529,7 @@ const ProfileScreen = () => {
                   onPress={() => navigation.navigate('Support')}
                 />
 
-                <View style={{ paddingLeft: 6 }}>
+                <View style={{paddingLeft: 6}}>
                   <Menu
                     text={'Log Out'}
                     type={Icons.AntDesign}
