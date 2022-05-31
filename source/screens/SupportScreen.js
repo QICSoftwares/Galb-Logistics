@@ -5,12 +5,12 @@ import {
   Image,
   TextInput,
   KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import React from 'react';
 import Icon, {Icons} from '../components/Icons';
 import Colors from '../constants/Colors';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-
 const SupportScreen = () => {
   const Head = () => {
     return (
@@ -53,16 +53,32 @@ const SupportScreen = () => {
           flexDirection: 'row',
           backgroundColor: Colors.white,
           alignItems: 'center',
-          paddingRight: 15,
-          paddingVertical: 15,
+          padding: 15,
         }}>
-        <TextInput style={styles.textinput} placeholder="Send Message" />
+        <TouchableOpacity>
+          <Icon
+            type={Icons.MaterialIcons}
+            name={'attach-file'}
+            color={Colors.primary}
+            size={26}
+          />
+        </TouchableOpacity>
+        <View
+          style={{
+            marginHorizontal: 11,
+            backgroundColor: Colors.blue,
+            flex: 1,
+            paddingHorizontal: 20,
+            borderRadius: 360,
+          }}>
+          <TextInput style={styles.textinput} placeholder="Send Message" />
+        </View>
         <TouchableOpacity>
           <Icon
             type={Icons.Ionicons}
             name={'send'}
             color={Colors.primary}
-            size={30}
+            size={26}
           />
         </TouchableOpacity>
       </View>
@@ -70,19 +86,16 @@ const SupportScreen = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
-      <Head />
-
-      <KeyboardAvoidingView
-        keyboardShouldPersistTaps={'always'}
-        behavior="padding"
-        style={{flex: 1}}>
+    <KeyboardAvoidingView
+      behavior={Platform.select({android: undefined, ios: 'padding'})}
+      style={{flex: 1}}>
+      <View style={{flex: 1, paddingBottom: 50}}>
         <View style={{flex: 1}}>
           <Body />
         </View>
         <Foot />
-      </KeyboardAvoidingView>
-    </View>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -91,10 +104,5 @@ export default SupportScreen;
 const styles = StyleSheet.create({
   textinput: {
     fontFamily: 'MavenPro-SemiBold',
-    marginHorizontal: 15,
-    backgroundColor: Colors.blue,
-    flex: 1,
-    paddingHorizontal: 20,
-    borderRadius: 360,
   },
 });

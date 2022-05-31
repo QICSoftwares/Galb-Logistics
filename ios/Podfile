@@ -26,6 +26,8 @@ target 'galb' do
   pod 'React', :path => '../node_modules/react-native', :subspecs => [
     'RCTLinkingIOS',
   ]
+  pod 'react-native-geocoder', :path => '../node_modules/@timwangdev/react-native-geocoder'
+
   target 'galbTests' do
     inherit! :complete
     # Pods for testing
