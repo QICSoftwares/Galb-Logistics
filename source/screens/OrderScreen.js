@@ -5,14 +5,19 @@ import Orders from '../components/OrderCom/Orders';
 import BottomSheet from 'reanimated-bottom-sheet';
 import TopBar from '../components/OrderCom/TopBar';
 import {SCREEN_WIDTH} from '../constants/Variables';
+import {useRoute} from '@react-navigation/native';
 
 let MARGIN = StatusBar.currentHeight;
 
 const OrderScreen = () => {
+  const route = useRoute();
+  const {uid} = route.params;
+  const {orderId} = route.params;
+
   const sheetRef = useRef(null);
   return (
     <View style={{flex: 1}}>
-      <Map />
+      <Map uid={uid} orderId={orderId} />
       <View style={styles.topbar}>
         <TopBar />
       </View>

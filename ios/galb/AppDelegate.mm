@@ -13,6 +13,7 @@
 #import <React/RCTSurfacePresenter.h>
 #import <React/RCTSurfacePresenterBridgeAdapter.h>
 #import <ReactCommon/RCTTurboModuleManager.h>
+#import <GoogleMaps/GoogleMaps.h>
 #import <React/RCTLinkingManager.h>
 #import <react/config/ReactNativeConfig.h>
 
@@ -31,6 +32,7 @@
 {
   RCTAppSetupPrepareApp(application);
   [FIRApp configure];
+  [GMSServices provideAPIKey:@"_YOUR_API_KEY_"];
   [RNNotifications startMonitorNotifications]; 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
 
