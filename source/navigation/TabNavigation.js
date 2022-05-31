@@ -39,6 +39,10 @@ export default function TabNavigation() {
       <Tab.Screen
         name="Order"
         component={Screen.OrderScreen}
+        initialParams={{
+          uid: '3WVVWobFjiXpZz4VzUaaYyiUoNA3',
+          orderId: 'GBL-85259213700',
+        }}
         options={{
           tabBarIcon: ({color}) => (
             <Icon

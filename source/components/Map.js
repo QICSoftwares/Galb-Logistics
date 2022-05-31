@@ -1,4 +1,4 @@
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, {PROVIDER_GOOGLE, Circle, Marker} from 'react-native-maps';
 import {
   StyleSheet,
   Alert,
@@ -10,17 +10,47 @@ import {
 import React, {useState, useEffect, useRef} from 'react';
 import {SCREEN_WIDTH, SCREEN_HEIGHT} from '../constants/Variables';
 import Geolocation from 'react-native-geolocation-service';
-import {mapStyle} from '../constants/MapStyle';
 import DropdownAlert from 'react-native-dropdownalert';
 import {GOOGLE_MAPS_APIKEY} from '@env';
+import MapViewDirections from 'react-native-maps-directions';
+import Colors from '../constants/Colors';
+import firestore from '@react-native-firebase/firestore';
 
-const Map = () => {
+const Map = props => {
+  const {uid, orderId} = props;
+  const [origin, setOrigin] = useState(null);
+  const [destination, setDes] = useState(null);
   const [region, setRegion] = useState({
     latitude: 6.465422,
     longitude: 3.406448,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
+
+  console.log(orderId);
+  useEffect(() => {
+    let subscriber;
+    if (orderId) {
+      subscriber = firestore()
+        .collection('Delivery')
+        .doc(uid)
+        .collection('Orders')
+        .doc(orderId)
+        .onSnapshot(documentSnapshot => {
+          console.log('User data: ', documentSnapshot.data());
+          const doc = documentSnapshot.data();
+          setOrigin({latitude: doc.pickupGeo._latitude, longitude: doc.pickupGeo_longitude});
+          setDes(doc.dropoffGeo);
+          setRegion({
+            ...doc.pickupGeo,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          });
+        });
+    }
+
+    return () => subscriber();
+  }, []);
 
   const hasPermissionIOS = async () => {
     const openSetting = () => {
@@ -142,9 +172,22 @@ const Map = () => {
         region={region}
         provider={PROVIDER_GOOGLE}
         style={styles.map}
-        customMapStyle={mapStyle}
-        showUserLocation
-      />
+        // customMapStyle={mapStyle}
+        showUserLocation>
+        {origin === null ? null : (
+          <>
+            <Marker coordinate={origin} title={'Pickup'} />
+            <MapViewDirections
+              origin={origin}
+              destination={destination}
+              apikey={GOOGLE_MAPS_APIKEY}
+              strokeWidth={3}
+              strokeColor={'blue'}
+            />
+            <Marker coordinate={destination} title={'Dropoff'} />
+          </>
+        )}
+      </MapView>
       <DropdownAlert
         zIndex={7000}
         updateStatusBar={false}
