@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "999281948506",
+    "project_id": "galb-logistics",
+    "storage_bucket": "galb-logistics.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:999281948506:android:32ce0daf2d0c78852ba563",
+        "android_client_info": {
+          "package_name": "com.qic.galb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "999281948506-1n2bb85eqmffv4jos53438ermem35ob4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYb4eMyN3H-ap41sSIEEF8Fpv5H1rEW9k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "999281948506-1n2bb85eqmffv4jos53438ermem35ob4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
