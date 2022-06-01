@@ -13,7 +13,7 @@
 #import <React/RCTSurfacePresenter.h>
 #import <React/RCTSurfacePresenterBridgeAdapter.h>
 #import <ReactCommon/RCTTurboModuleManager.h>
-
+ #import <GoogleMaps/GoogleMaps.h>
 #import <react/config/ReactNativeConfig.h>
 
 @interface AppDelegate () <RCTCxxBridgeDelegate, RCTTurboModuleManagerDelegate> {
@@ -29,6 +29,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+   [GMSServices provideAPIKey:@"AIzaSyCS_foNZvDZ4PqTA3ejAU8jko_hqB7XPiw"]; // add this line using the api key obtained from Google Console
   RCTAppSetupPrepareApp(application);
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
