@@ -1,5 +1,5 @@
 import {StyleSheet, StatusBar, View, Text, Button} from 'react-native';
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Map from '../components/Map';
 import Orders from '../components/OrderCom/Orders';
 import BottomSheet from 'reanimated-bottom-sheet';
@@ -13,11 +13,12 @@ const OrderScreen = () => {
   const route = useRoute();
   const {uid} = route.params;
   const {orderId} = route.params;
+  const [details, setDetails] = useState(null);
 
   const sheetRef = useRef(null);
   return (
     <View style={{flex: 1}}>
-      <Map uid={uid} orderId={orderId} />
+      <Map uid={uid} orderId={orderId} setDetails={setDetails} />
       <View style={styles.topbar}>
         <TopBar />
       </View>
@@ -25,7 +26,7 @@ const OrderScreen = () => {
         ref={sheetRef}
         snapPoints={['46%', '30%', '12%']}
         borderRadius={10}
-        renderContent={Orders}
+        renderContent={() => Orders(details)}
         initialSnap={1}
       />
     </View>
