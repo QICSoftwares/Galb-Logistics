@@ -10,6 +10,25 @@ import {useSelector} from 'react-redux';
 
 MMKV = new MMKVLoader().initialize();
 
+export const Bar = () => {
+  return (
+    <View
+      style={{
+        paddingVertical: 16,
+        width: '100%',
+      }}>
+      <View
+        style={{
+          backgroundColor: Colors.primary,
+          width: 50,
+          height: 5,
+          borderRadius: 360,
+          alignSelf: 'center',
+        }}></View>
+    </View>
+  );
+};
+
 export const Balance = props => {
   const balance = useSelector(state => state.user.balance);
 

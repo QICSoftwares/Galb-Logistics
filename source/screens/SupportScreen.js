@@ -6,19 +6,47 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  TouchableOpacity,
+  Keyboard,
 } from 'react-native';
-import React from 'react';
+import React, {useRef, useEffect} from 'react';
 import Icon, {Icons} from '../components/Icons';
 import Colors from '../constants/Colors';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
+AndroidKeyboardAdjust.setAdjustResize();
+
 const SupportScreen = () => {
+  const input1Ref = useRef(null);
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {},
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        input1Ref.current.blur();
+      },
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
   const Head = () => {
     return (
-      <View
+      <TouchableOpacity
         style={{
           flexDirection: 'row',
-          padding: 16,
+          padding: 14,
           alignItems: 'center',
+          elevation: 5,
+          shadowColor: 'black',
+          shadowOpacity: 0.26,
+          shadowOffset: {width: 0, height: 2},
+          shadowRadius: 10,
+          backgroundColor: Colors.white,
         }}>
         <Icon
           type={Icons.MaterialIcons}
@@ -35,15 +63,11 @@ const SupportScreen = () => {
           }}>
           Support
         </Text>
-      </View>
+      </TouchableOpacity>
     );
   };
   const Body = () => {
-    return (
-      <View style={{flex: 1}}>
-        <Text>SupportScreen</Text>
-      </View>
-    );
+    return <View style={{flex: 1}}> </View>;
   };
 
   const Foot = () => {
@@ -53,7 +77,7 @@ const SupportScreen = () => {
           flexDirection: 'row',
           backgroundColor: Colors.white,
           alignItems: 'center',
-          padding: 15,
+          padding: 12,
         }}>
         <TouchableOpacity>
           <Icon
@@ -71,7 +95,12 @@ const SupportScreen = () => {
             paddingHorizontal: 20,
             borderRadius: 360,
           }}>
-          <TextInput style={styles.textinput} placeholder="Send Message" />
+          <TextInput
+            ref={input1Ref}
+            style={styles.textinput}
+            multiline={true}
+            placeholder="Send Message"
+          />
         </View>
         <TouchableOpacity>
           <Icon
@@ -86,16 +115,11 @@ const SupportScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.select({android: undefined, ios: 'padding'})}
-      style={{flex: 1}}>
-      <View style={{flex: 1, paddingBottom: 50}}>
-        <View style={{flex: 1}}>
-          <Body />
-        </View>
-        <Foot />
-      </View>
-    </KeyboardAvoidingView>
+    <View style={{flex: 1}}>
+      <Head />
+      <Body />
+      <Foot />
+    </View>
   );
 };
 
@@ -104,5 +128,6 @@ export default SupportScreen;
 const styles = StyleSheet.create({
   textinput: {
     fontFamily: 'MavenPro-SemiBold',
+    maxHeight: 60,
   },
 });

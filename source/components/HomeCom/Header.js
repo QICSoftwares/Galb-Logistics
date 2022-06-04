@@ -14,7 +14,7 @@ import {useSelector} from 'react-redux';
 
 MMKV = new MMKVLoader().initialize();
 
-const Header = () => {
+const Header = props => {
   const navigation = useNavigation();
   const name = useSelector(state => state.user.name);
 
@@ -30,7 +30,8 @@ const Header = () => {
     );
   };
 
-  const TrackOrder = () => {
+  const TrackOrder = props => {
+    console.log(props.r);
     return (
       <View style={{flexDirection: 'row', justifyContent: 'center'}}>
         <View
@@ -43,6 +44,7 @@ const Header = () => {
             paddingLeft: 10,
           }}>
           <TextInput
+            ref={props.r}
             placeholder="Enter Order Number"
             style={{flex: 1, fontFamily: 'MavenPro-Medium'}}
           />
@@ -82,7 +84,7 @@ const Header = () => {
       </View>
       <HeaderText />
       <View style={{flex: 1, justifyContent: 'center', paddingBottom: 0}}>
-        <TrackOrder />
+        <TrackOrder r={props.r} />
       </View>
     </View>
   );

@@ -69,7 +69,7 @@ const StackNavigation = () => {
           name="Support"
           component={Screen.SupportScreen}
           options={{
-            header: props => <Head />,
+            header: () => null,
             headerStyle: {
               backgroundColor: Colors.white,
             },
