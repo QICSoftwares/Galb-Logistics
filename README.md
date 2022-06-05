@@ -8,5 +8,7 @@
 - Live Chat to handle issues
 ### Please Note
 > This app is still under production and this is not the finised version
-
+![App Screens](doc/images/2.png)
+![App Screens](doc/images/3.png)
+![App Screens](doc/images/4.png)
 Built by @benjamineruvieru
