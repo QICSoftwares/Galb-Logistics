@@ -94,14 +94,17 @@ const Progress = () => {
     </View>
   );
 };
-const Orders = () => (
-  <View style={styles.container}>
-    <Bar />
-    <Status />
-    <Progress />
-    <Item />
-  </View>
-);
+const Orders = details => {
+  console.log('Ordes', details);
+  return (
+    <View style={styles.container}>
+      <Bar />
+      <Status />
+      <Progress />
+      <Item />
+    </View>
+  );
+};
 
 export default Orders;
 
