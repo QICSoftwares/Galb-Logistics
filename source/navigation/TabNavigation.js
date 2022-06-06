@@ -13,6 +13,12 @@ export default function TabNavigation() {
       barStyle={{
         backgroundColor: Colors.bag1Bg,
       }}
+      screenOptions={{
+        tabBarHideOnKeyboard: false,
+      }}
+      tabBarOptions={{
+        keyboardHidesTabBar: false, //<=====
+      }}
       labeled={false}
       detachInactiveScreens={false}
       activeColor={Colors.primary}

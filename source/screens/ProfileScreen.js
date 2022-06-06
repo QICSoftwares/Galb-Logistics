@@ -8,10 +8,12 @@ import {
   Keyboard,
   ActivityIndicator,
   StatusBar,
+  Platform,
+  Modal as RModal,
 } from 'react-native';
 import React, {useRef, useState, useEffect} from 'react';
 import Colors from '../constants/Colors';
-import {Icons} from '../components/Icons';
+import Icon, {Icons} from '../components/Icons';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import BottomSheet from 'reanimated-bottom-sheet';
 import {
@@ -20,6 +22,7 @@ import {
   Menu,
   Address,
   generateTransactionRef,
+  Bar,
 } from '../components/ProfileCom/Components';
 import {Logout} from '../firebase/Functions';
 import {Modal, Portal, Provider} from 'react-native-paper';
@@ -29,25 +32,73 @@ import {useSelector} from 'react-redux';
 import DropdownAlert from 'react-native-dropdownalert';
 import {FLW_API} from '@env';
 import {firebase} from '@react-native-firebase/functions';
+import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
+
+AndroidKeyboardAdjust.setUnchanged();
 
 const ProfileScreen = () => {
-  console.log(FLW_API);
   const route = useRoute();
   const {mode, link} = route.params;
   const [btmsh, setBtmsh] = useState('');
   const [visible, setVisible] = useState(false);
+  const [visible2, setVisible2] = useState(false);
+
   const name = useSelector(state => state.user.name);
   const email = useSelector(state => state.user.email);
   const uid = useSelector(state => state.user.uid);
   const phonenumber = useSelector(state => state.user.phonenumber);
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
+  const showModal2 = () => setVisible2(true);
+  const hideModal2 = () => setVisible2(false);
   const navigation = useNavigation();
   const sheetRef = useRef(null);
   const inputRef = useRef(null);
   const input1Ref = useRef(null);
   const input2Ref = useRef(null);
-
+  const input3Ref = useRef(null);
+  let dropDownAlertRef = useRef();
+  const containerStyle = {
+    backgroundColor: 'white',
+    padding: 20,
+    zIndex: 100,
+    margin: 20,
+    borderRadius: 10,
+  };
+  var items = [
+    {
+      id: 1,
+      name: 'JavaScript',
+    },
+    {
+      id: 2,
+      name: 'Java',
+    },
+    {
+      id: 3,
+      name: 'Ruby',
+    },
+    {
+      id: 4,
+      name: 'React Native',
+    },
+    {
+      id: 5,
+      name: 'PHP',
+    },
+    {
+      id: 6,
+      name: 'Python',
+    },
+    {
+      id: 7,
+      name: 'Go',
+    },
+    {
+      id: 8,
+      name: 'Swift',
+    },
+  ];
   useEffect(() => {
     if (mode === 'Redirect') {
       handleOnRedirect();
@@ -81,25 +132,6 @@ const ProfileScreen = () => {
     } else {
       Notify('Failed', 'The transaction was not successful', 'error');
     }
-  };
-
-  const Bar = () => {
-    return (
-      <View
-        style={{
-          paddingVertical: 16,
-          width: '100%',
-        }}>
-        <View
-          style={{
-            backgroundColor: Colors.primary,
-            width: 50,
-            height: 5,
-            borderRadius: 360,
-            alignSelf: 'center',
-          }}></View>
-      </View>
-    );
   };
 
   const HeadSheet = props => {
@@ -201,23 +233,15 @@ const ProfileScreen = () => {
     );
   };
 
-  const containerStyle = {
-    backgroundColor: 'white',
-    padding: 20,
-    zIndex: 100,
-    margin: 20,
-    borderRadius: 10,
-  };
-
   const Deposit = () => {
     setBtmsh('deposit');
     sheetRef.current.snapTo(0);
   };
-  let dropDownAlertRef = useRef();
 
   const Notify = (title, message, type) => {
     dropDownAlertRef.alertWithType(type, title, message);
   };
+
   const DepositScreen = () => {
     const [amount, setAmount] = useState('');
 
@@ -299,7 +323,23 @@ const ProfileScreen = () => {
     return (
       <View style={{flex: 1}}>
         <HeadSheet head={'Deposit'} />
-
+        <View
+          style={{
+            width: '75%',
+            flexDirection: 'row',
+            alignSelf: 'center',
+            marginBottom: 9,
+            marginTop: 50,
+          }}>
+          <Text
+            style={{
+              color: Colors.black,
+              fontFamily: 'MavenPro-Bold',
+              fontSize: 15,
+            }}>
+            Amount
+          </Text>
+        </View>
         <View
           style={{
             height: 60,
@@ -308,7 +348,7 @@ const ProfileScreen = () => {
             borderColor: Colors.black,
             width: '75%',
             alignSelf: 'center',
-            marginVertical: 50,
+            marginBottom: 50,
             flexDirection: 'row',
             alignItems: 'center',
           }}>
@@ -323,7 +363,7 @@ const ProfileScreen = () => {
           </Text>
           <TextInput
             ref={inputRef}
-            placeholder={'Input Amount'}
+            placeholder={'0.00'}
             defaultValue={amount}
             style={styles.textinput}
             keyboardType={'number-pad'}
@@ -369,6 +409,8 @@ const ProfileScreen = () => {
 
   const WithdrawScreen = () => {
     const [amount, setAmount] = useState('');
+    const [accnum, setAccnum] = useState('');
+
     const [init, setInit] = useState(false);
 
     const handleTransfer = async amount => {
@@ -406,6 +448,7 @@ const ProfileScreen = () => {
         'keyboardDidHide',
         () => {
           input1Ref.current.blur();
+          input2Ref.current.blur();
         },
       );
 
@@ -419,13 +462,29 @@ const ProfileScreen = () => {
       <View>
         <View
           style={{
+            width: '75%',
+            flexDirection: 'row',
+            alignSelf: 'center',
+            marginBottom: 9,
+            marginTop: 25,
+          }}>
+          <Text
+            style={{
+              color: Colors.black,
+              fontFamily: 'MavenPro-Bold',
+              fontSize: 15,
+            }}>
+            Amount
+          </Text>
+        </View>
+        <View
+          style={{
             height: 60,
             borderRadius: 10,
             borderWidth: 2,
             borderColor: Colors.black,
             width: '75%',
             alignSelf: 'center',
-            marginVertical: 50,
             flexDirection: 'row',
             alignItems: 'center',
           }}>
@@ -440,7 +499,7 @@ const ProfileScreen = () => {
           </Text>
           <TextInput
             ref={input1Ref}
-            placeholder={'Input Amount'}
+            placeholder={'0.00'}
             defaultValue={amount}
             style={styles.textinput}
             keyboardType={'number-pad'}
@@ -449,8 +508,96 @@ const ProfileScreen = () => {
         </View>
         <View
           style={{
+            width: '75%',
+            flexDirection: 'row',
+            alignSelf: 'center',
+            marginBottom: 9,
+            marginTop: 20,
+          }}>
+          <Text
+            style={{
+              color: Colors.black,
+              fontFamily: 'MavenPro-Bold',
+              fontSize: 15,
+            }}>
+            Account Number
+          </Text>
+        </View>
+        <View
+          style={{
+            height: 60,
+            borderRadius: 10,
+            borderWidth: 2,
+            borderColor: Colors.black,
+            width: '75%',
+            alignSelf: 'center',
+            marginBottom: 20,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <TextInput
+            ref={input2Ref}
+            placeholder={'0123456789'}
+            defaultValue={accnum}
+            style={styles.textinput}
+            keyboardType={'number-pad'}
+            onChangeText={value => setAccnum(value)}
+          />
+        </View>
+        <View
+          style={{
+            width: '75%',
+            flexDirection: 'row',
+            alignSelf: 'center',
+            marginBottom: 9,
+          }}>
+          <Text
+            style={{
+              color: Colors.black,
+              fontFamily: 'MavenPro-Bold',
+              fontSize: 15,
+            }}>
+            Bank
+          </Text>
+        </View>
+        <TouchableOpacity
+          onPress={() => {
+            //sheetRef.current.snapTo(1);
+            showModal2();
+          }}
+          style={{
+            height: 60,
+            borderRadius: 10,
+            borderWidth: 2,
+            borderColor: Colors.black,
+            width: '75%',
+            alignSelf: 'center',
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingRight: 10,
+          }}>
+          <Text
+            style={{
+              paddingLeft: 13,
+              color: Colors.black,
+              fontFamily: 'MavenPro-Regular',
+              fontSize: 18,
+              flex: 1,
+            }}>
+            Select Bank
+          </Text>
+          <Icon
+            type={Icons.Feather}
+            name={'chevron-down'}
+            color={Colors.black}
+          />
+        </TouchableOpacity>
+
+        <View
+          style={{
             justifyContent: 'center',
             alignItems: 'center',
+            marginTop: 25,
           }}>
           <TouchableOpacity
             disabled={init}
@@ -478,6 +625,64 @@ const ProfileScreen = () => {
     );
   };
 
+  const SelectBank = () => {
+    const [bank, setBank] = useState('');
+    useEffect(() => {
+      const keyboardDidShowListener = Keyboard.addListener(
+        'keyboardDidShow',
+        () => {},
+      );
+      const keyboardDidHideListener = Keyboard.addListener(
+        'keyboardDidHide',
+        () => {
+          input3Ref.current.blur();
+        },
+      );
+
+      return () => {
+        keyboardDidHideListener.remove();
+        keyboardDidShowListener.remove();
+      };
+    }, []);
+    return (
+      <View style={{padding: 30}}>
+        <TouchableOpacity onPress={hideModal2}>
+          <Icon type={Icons.Feather} name={'x'} color={'black'} size={32} />
+        </TouchableOpacity>
+
+        <Text
+          style={{
+            fontFamily: 'MavenPro-SemiBold',
+            color: Colors.black,
+            fontSize: 25,
+            marginVertical: 25,
+          }}>
+          Select Bank
+        </Text>
+        <View
+          style={{
+            height: 50,
+            borderRadius: 10,
+            borderWidth: 2,
+            borderColor: Colors.black,
+            width: '100%',
+            alignSelf: 'center',
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingLeft: 8,
+          }}>
+          <Icon type={Icons.Feather} name={'search'} color={'grey'} />
+          <TextInput
+            ref={input3Ref}
+            placeholder={'Search for Bank'}
+            defaultValue={bank}
+            style={styles.textinput}
+            onChangeText={value => setBank(value)}
+          />
+        </View>
+      </View>
+    );
+  };
   return (
     <>
       <Provider>
@@ -547,16 +752,25 @@ const ProfileScreen = () => {
               contentContainerStyle={containerStyle}>
               <TrackOrder />
             </Modal>
+
             <BottomSheet
               ref={sheetRef}
               snapPoints={['100%', 0]}
               borderRadius={0}
               renderContent={BottomSheetV}
               initialSnap={1}
+              enabledInnerScrolling={true}
             />
           </View>
         </Portal>
       </Provider>
+      <RModal
+        visible={visible2}
+        onDismiss={hideModal2}
+        //</> contentContainerStyle={containerStyle2}
+      >
+        <SelectBank />
+      </RModal>
       <DropdownAlert
         zIndex={10000}
         onClose={() => {
@@ -584,6 +798,6 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     flex: 1,
     fontFamily: 'MavenPro-Regular',
-    fontSize: 19,
+    fontSize: 18,
   },
 });

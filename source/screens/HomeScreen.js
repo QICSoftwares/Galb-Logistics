@@ -6,21 +6,26 @@ import {
   StatusBar,
   Platform,
   TouchableOpacity,
+  Keyboard,
 } from 'react-native';
-import React, { useRef } from 'react';
+import React, {useRef, useEffect} from 'react';
 import Colors from '../constants/Colors';
-import { SCREEN_WIDTH } from '../constants/Variables';
+import {SCREEN_WIDTH} from '../constants/Variables';
 import box from '../assets/images/box.png';
 import rider from '../assets/images/rider.png';
 import rides from '../assets/images/rides.png';
 import transaction from '../assets/images/transaction.png';
 import Header from '../components/HomeCom/Header';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import DropdownAlert from 'react-native-dropdownalert';
+import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
+
+AndroidKeyboardAdjust.setAdjustNothing();
 
 const HomeScreen = () => {
   const navigation = useNavigation();
   let dropDownAlertRef = useRef();
+  const inputRef = useRef(null);
 
   const Notify = (title, message, type) => {
     dropDownAlertRef.alertWithType(type, title, message);
@@ -39,13 +44,29 @@ const HomeScreen = () => {
       </View>
     );
   };
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {},
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        inputRef.current.blur();
+      },
+    );
 
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
   return (
     <View style={styles.container}>
-      <View style={{ height: '40%' }}>
-        <Header />
+      <View style={{height: '40%'}}>
+        <Header r={inputRef} />
       </View>
-      <View style={{ justifyContent: 'space-evenly', flex: 1 }}>
+      <View style={{justifyContent: 'space-evenly', flex: 1}}>
         <View
           style={{
             flexDirection: 'row',
@@ -102,7 +123,7 @@ const HomeScreen = () => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: {flex: 1},
 
   menutext: {
     fontFamily: 'MavenPro-SemiBold',
@@ -119,5 +140,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  menuimg: { height: '50%', width: '50%' },
+  menuimg: {height: '50%', width: '50%'},
 });

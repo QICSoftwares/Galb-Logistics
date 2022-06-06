@@ -6,6 +6,7 @@ import {
   PermissionsAndroid,
   Platform,
   ToastAndroid,
+  Image,
 } from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
 import {SCREEN_WIDTH, SCREEN_HEIGHT} from '../constants/Variables';
@@ -17,7 +18,9 @@ import Colors from '../constants/Colors';
 import firestore from '@react-native-firebase/firestore';
 
 const Map = props => {
-  const {uid, orderId} = props;
+  let dropDownAlertRef = useRef();
+  const _map = useRef(null);
+  const {uid, orderId, setDetails} = props;
   const [origin, setOrigin] = useState(null);
   const [destination, setDes] = useState(null);
   const [region, setRegion] = useState({
@@ -27,10 +30,9 @@ const Map = props => {
     longitudeDelta: 0.0421,
   });
 
-  console.log(orderId);
   useEffect(() => {
     let subscriber;
-    if (orderId) {
+    if (!!orderId) {
       subscriber = firestore()
         .collection('Delivery')
         .doc(uid)
@@ -39,12 +41,28 @@ const Map = props => {
         .onSnapshot(documentSnapshot => {
           console.log('User data: ', documentSnapshot.data());
           const doc = documentSnapshot.data();
-          setOrigin({latitude: doc.pickupGeo._latitude, longitude: doc.pickupGeo_longitude});
-          setDes(doc.dropoffGeo);
-          setRegion({
-            ...doc.pickupGeo,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+          setDetails(doc);
+
+          setDes({
+            latitude: doc.dropoffGeo._latitude,
+            longitude: doc.dropoffGeo._longitude,
+          });
+          if (_map.current) {
+            console.log('Animating');
+            _map.current.animateCamera(
+              {
+                center: {
+                  latitude: doc.pickupGeo._latitude,
+                  longitude: doc.pickupGeo._longitude,
+                },
+                zoom: 15,
+              },
+              5000,
+            );
+          }
+          setOrigin({
+            latitude: doc.pickupGeo._latitude,
+            longitude: doc.pickupGeo._longitude,
           });
         });
     }
@@ -160,8 +178,6 @@ const Map = props => {
     getLocation();
   }, []);
 
-  let dropDownAlertRef = useRef();
-
   const Notify = (title, message, type) => {
     dropDownAlertRef.alertWithType(type, title, message);
   };
@@ -170,13 +186,17 @@ const Map = props => {
     <View>
       <MapView
         region={region}
+        ref={_map}
         provider={PROVIDER_GOOGLE}
-        style={styles.map}
-        // customMapStyle={mapStyle}
-        showUserLocation>
+        style={styles.map}>
         {origin === null ? null : (
           <>
-            <Marker coordinate={origin} title={'Pickup'} />
+            <Marker coordinate={origin} title={'Pickup'}>
+              <Image
+                source={require('../assets/images/dot.png')}
+                style={{height: 17, width: 17}}
+              />
+            </Marker>
             <MapViewDirections
               origin={origin}
               destination={destination}
@@ -184,7 +204,12 @@ const Map = props => {
               strokeWidth={3}
               strokeColor={'blue'}
             />
-            <Marker coordinate={destination} title={'Dropoff'} />
+            <Marker coordinate={destination} title={'Dropoff'}>
+              <Image
+                source={require('../assets/images/dotgreen.png')}
+                style={{height: 17, width: 17}}
+              />
+            </Marker>
           </>
         )}
       </MapView>

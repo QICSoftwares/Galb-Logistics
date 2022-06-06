@@ -31,7 +31,7 @@
       </activity>
       <meta-data
      android:name="com.google.android.geo.API_KEY"
-     android:value="rrrr"/> 
+     android:value="***"/> 
      <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
             See README(https://goo.gl/l4GJaQ) for more. 
     <meta-data
