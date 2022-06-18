@@ -131,6 +131,17 @@ const ForgotPasswordScreen = () => {
       <Body />
       <Footer />
       <DropdownAlert
+        updateStatusBar={false}
+        defaultContainer={{
+          flexDirection: 'row',
+          paddingVertical: 10,
+          paddingHorizontal: 12,
+          margin: 10,
+          borderRadius: 15,
+        }}
+        messageStyle={{fontFamily: 'MavenPro-Regular', color: 'white'}}
+        titleStyle={{fontFamily: 'MavenPro-Bold', color: 'white'}}
+        imageStyle={{height: 25, width: 25, alignSelf: 'center'}}
         ref={ref => {
           if (ref) {
             dropDownAlertRef = ref;

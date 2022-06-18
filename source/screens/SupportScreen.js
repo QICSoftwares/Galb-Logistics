@@ -8,6 +8,7 @@ import {
   Platform,
   TouchableOpacity,
   Keyboard,
+  FlatList,
 } from 'react-native';
 import React, {useRef, useEffect} from 'react';
 import Icon, {Icons} from '../components/Icons';
@@ -67,7 +68,11 @@ const SupportScreen = () => {
     );
   };
   const Body = () => {
-    return <View style={{flex: 1}}> </View>;
+    return (
+      <View style={{flex: 1}}>
+        <FlatList />
+      </View>
+    );
   };
 
   const Foot = () => {
