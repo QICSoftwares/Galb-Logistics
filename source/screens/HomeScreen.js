@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Keyboard,
 } from 'react-native';
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, createRef} from 'react';
 import Colors from '../constants/Colors';
 import {SCREEN_WIDTH} from '../constants/Variables';
 import box from '../assets/images/box.png';
@@ -18,9 +18,6 @@ import transaction from '../assets/images/transaction.png';
 import Header from '../components/HomeCom/Header';
 import {useNavigation} from '@react-navigation/native';
 import DropdownAlert from 'react-native-dropdownalert';
-import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
-
-AndroidKeyboardAdjust.setAdjustNothing();
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -107,13 +104,21 @@ const HomeScreen = () => {
         </View>
       </View>
       <DropdownAlert
+        updateStatusBar={false}
+        defaultContainer={{
+          flexDirection: 'row',
+          paddingVertical: 10,
+          paddingHorizontal: 12,
+          margin: 10,
+          borderRadius: 15,
+        }}
+        messageStyle={{fontFamily: 'MavenPro-Regular', color: 'white'}}
+        titleStyle={{fontFamily: 'MavenPro-Bold', color: 'white'}}
+        imageStyle={{height: 25, width: 25, alignSelf: 'center'}}
         ref={ref => {
           if (ref) {
             dropDownAlertRef = ref;
           }
-        }}
-        onClose={() => {
-          Platform.OS !== 'ios' && StatusBar.setBackgroundColor(Colors.primary);
         }}
       />
     </View>

@@ -75,6 +75,7 @@ const Progress = () => {
   return (
     <View style={{flex: 1}}>
       <ProgressSteps
+      activeStep={2}
         nextBtnDisabled={true}
         activeStepIconBorderColor={Colors.primary}
         completedProgressBarColor={Colors.primary}
