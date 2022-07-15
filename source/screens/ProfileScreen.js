@@ -108,12 +108,10 @@ const ProfileScreen = () => {
   const handleOnRedirect = () => {
     var mdatalist = {};
     var data = link.replace('https://galblogistics.app/?', '');
-    console.log(data);
     let datalist = data.split('&');
     datalist.map(m => {
       mdatalist[m.split('=')[0]] = m.split('=')[1];
     });
-    console.log(mdatalist);
     if (mdatalist.status == 'cancelled') {
       Notify('Failed', 'The transaction failed', 'error');
     } else if (mdatalist.status == 'successful') {
@@ -126,7 +124,6 @@ const ProfileScreen = () => {
       id: txid,
       uid: uid,
     });
-    console.log(data);
     if (data.status === 'success') {
       Notify('Success', 'The transaction was successful', 'success');
     } else {
@@ -270,14 +267,12 @@ const ProfileScreen = () => {
     }, []);
 
     const onDidInitialize = data => {
-      console.log('initialized');
       setInit(false);
       setAmount('');
       sheetRef.current.snapTo(1);
       navigation.navigate('Webview', {link: data});
     };
     const onWillInitialize = async () => {
-      console.log('initialing');
       setInit(true);
       Keyboard.dismiss();
     };
@@ -305,7 +300,6 @@ const ProfileScreen = () => {
             });
             // use payment link
             onDidInitialize(paymentLink);
-            console.log(paymentLink);
           } catch (error) {
             // handle payment error
             onInitializeError(error.message);
@@ -429,7 +423,6 @@ const ProfileScreen = () => {
               debit_currency: 'NGN',
             },
           });
-          console.log(data);
         }
       } else {
         Notify(
