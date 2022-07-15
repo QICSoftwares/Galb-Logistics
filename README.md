@@ -52,4 +52,13 @@ $ react-native run-ios
 ![App Screens](doc/images/2.png)
 ![App Screens](doc/images/3.png)
 ![App Screens](doc/images/4.png)
+## Contributing
+
+1.  Create a fork
+2.  Create your feature branch: `git checkout -b my-feature`
+3.  Commit your changes: `git commit -am 'Add some feature'`
+4.  Push to the branch: `git push origin my-new-feature`
+5.  Submit a pull request 🚀
+<br />
+
 Built by @benjamineruvieru
