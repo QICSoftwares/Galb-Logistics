@@ -1,19 +1,20 @@
 # Galb-Logistics
-### A mobile app for a logistics company 
+### Mobile app for a logistics company 
 ![App Screens](doc/images/1.png)
-### Features
+## Features
 - Pickup and Delivery Services
 - Order Tracking
 - Deposits and Withdrawals
 - Live Chat to handle issues
 
-### Tech Stack
+## Tech Stack
 - React Native
 - Firebase
 - Flutterwave for handling payments
+- Google Maps
 
 
-### How to build
+## How to build
 Clone this repo to your machine: 
 ```
 $ git clone https://github.com/QICSoftwares/Galb-Logistics.git
@@ -45,7 +46,7 @@ To run on iOS:
 $ react-native run-ios
 ```
 
-### Please Note
+## Please Note
 > This app is still under production and this is not the finised version <br />
 > Additionally, this app has not been tested for the iOS environment.
 
